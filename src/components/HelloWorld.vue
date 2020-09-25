@@ -1,86 +1,42 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
-  </div>
+    <el-container class="container">
+
+      <el-header>
+        禁止商用，提倡互帮互助，打击各种收费代抢
+      </el-header>
+
+      <el-container>
+
+        <el-aside width="50">
+          <el-menu
+            :default-active="$route.path"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+            router
+          >
+            <el-menu-item index="/Load" route="/Load">
+              <i class="el-icon-menu"></i>
+              <span slot="title">抢号</span>
+            </el-menu-item>
+            <el-menu-item index="/List" route="/List">
+              <i class="el-icon-menu"></i>
+              <span slot="title">搜号</span>
+            </el-menu-item>
+          </el-menu>
+        </el-aside>
+
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+
+      </el-container>
+
+      <el-footer>
+        @xoyo.xuyutech.top
+      </el-footer>
+
+    </el-container>
 </template>
 
 <script>
@@ -96,18 +52,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+  .container{
+    height: 100%;
+    width: 100%;
+  }
+  .el-header, .el-footer {
+    background-color: #545c64;
+    color: #fff;
+    text-align: center;
+    line-height: 60px;
+  }
+  .el-menu{
+    height: 100%;
+  }
 </style>

@@ -1,51 +1,35 @@
 <template>
-  <div class="hello">
-    <el-row>
-      <el-label>号所属区服</el-label>
-      <el-cascader
-        :options="zooms"
-        :props="cascaderOption"
-        @change="handleChange"></el-cascader>
-    </el-row>
-    <el-row>
-      <el-label>cookie 中的输入ts_session_id_</el-label>
-      <el-input v-model="ts_session_id" placeholder="输入ts_session_id_"></el-input>
-    </el-row>
-    <el-row>
-      <el-label>cookie 中的输入xoyokey_</el-label>
-      <el-input v-model="xoyokey" placeholder="输入xoyokey_"></el-input>
-    </el-row>
-    <el-row>
-      <el-label>总费用，账号费用+分离费用</el-label>
-      <el-input type="number" v-model="total_price" placeholder="输入total_price"></el-input>
-    </el-row>
-    <el-row>
-      <el-label>分离费用，新账号90 老账号 180</el-label>
-      <el-input type="number" v-model="separation_service_fee" placeholder="输入separation_service_fee，新账号90 老账号 180"></el-input>
-    </el-row>
-    <el-row>
-      <el-input v-model="id" placeholder="输入代抢 id"></el-input>
-    </el-row>
-    <el-row>
-      <el-button type="success" :loading="loading" @click="submit">提交</el-button>
-      <el-button type="success" @click="stop">停止</el-button>
-      <!--<el-button type="success" @click="test">测试</el-button>-->
-    </el-row>
-    <el-row></el-row>
-    <el-row></el-row>
-    <el-row></el-row>
-    <el-row></el-row>
-    <el-row></el-row>
-    <el-row></el-row>
-    <el-row></el-row>
-    <el-row></el-row>
-    <el-row></el-row>
-    <el-row>
-      <div class="block">
-        <span class="demonstration">二维码</span>
+  <div>
+    <el-form label-position="right" label-width="250px" style="padding-bottom: 150px;">
+      <el-form-item label="号所属区服">
+        <el-cascader
+          :options="zooms"
+          :props="cascaderOption"
+          @change="handleChange"></el-cascader>
+      </el-form-item>
+      <el-form-item label="cookie 中的输入ts_session_id_">
+        <el-input v-model="ts_session_id" placeholder="输入ts_session_id_"></el-input>
+      </el-form-item>
+      <el-form-item label="cookie 中的输入xoyokey_">
+        <el-input v-model="xoyokey" placeholder="输入xoyokey_"></el-input>
+      </el-form-item>
+      <el-form-item label="总费用 元">
+        <el-input type="number" v-model="total_price" placeholder="账号费用+分离费用"></el-input>
+      </el-form-item>
+      <el-form-item label="分离费用 元">
+        <el-input type="number" v-model="separation_service_fee" placeholder="新账号90 老账号 180"></el-input>
+      </el-form-item>
+      <el-form-item label="账号 ID">
+        <el-input v-model="id" placeholder="输入代抢 id"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="success" :loading="loading" @click="submit">提交</el-button>
+        <el-button type="success" @click="stop">停止</el-button>
+      </el-form-item>
+      <el-form-item label="二维码">
         <iframe :src="qrcode"></iframe>
-      </div>
-    </el-row>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -55,6 +39,7 @@
     data() {
       return {
         is_request:false,
+        count:3,
         ts_session_id: "",
         xoyokey: "",
         id: "620616610738380800",
@@ -120,26 +105,16 @@
       }
     },
     methods: {
-      getBase64Image: function (img) {
-        console.info(img)
-        let canvas = this.document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        let ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-        let ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
-        let dataURL = canvas.toDataURL("image/"+ext);
-        return dataURL;
-      },
       submit: function () {
         this.loading = true;
         this.interval = setInterval(this.submitForm, 100);
       },
       submitForm: function () {
-        if (this.is_request){
+        if (this.is_request && this.count<=0){
           return;
         }
         this.is_request = true;
+        this.count = this.count -1;
         this.$axios({
           method: "POST",
           url: "/submitForm",
@@ -160,14 +135,14 @@
             this.$notify({
               title: '失败',
               message: res.data.msg,
-              duration: 500
+              duration: 1000
             });
           } else {
             window.clearInterval(this.interval);
             this.qrcode = res.data.url;
           }
-          console.info(res)
           this.is_request = false;
+          this.count = this.count +1;
         }).catch((res) => {
           this.stop();
           console.info("catch")
@@ -175,9 +150,10 @@
           this.$notify({
             title: '失败',
             message: res,
-            duration: 500
+            duration: 3000
           });
           this.is_request = false;
+          this.count = this.count +1;
         })
       },
       test: function () {
@@ -186,6 +162,7 @@
       stop: function () {
         window.clearInterval(this.interval);
         this.loading = false;
+        this.qrcode = "";
 
       },
       handleChange: function (e) {

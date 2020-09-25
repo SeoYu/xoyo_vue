@@ -17,6 +17,7 @@ const myaxios = axios.create({
   baseURL:process.env.BASE_API,
   timeout: 50000 // 请求超时时间
 })
+Vue.prototype.$axios = myaxios;
 
 /* eslint-disable no-new */
 new Vue({
@@ -25,4 +26,3 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
-Vue.prototype.$axios = myaxios;
