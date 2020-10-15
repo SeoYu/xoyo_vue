@@ -19,10 +19,14 @@
               <i class="el-icon-menu"></i>
               <span slot="title">抢号</span>
             </el-menu-item>
-            <el-menu-item index="/List" route="/List">
+            <el-menu-item index="/Verify" route="/Verify">
               <i class="el-icon-menu"></i>
-              <span slot="title">搜号</span>
+              <span slot="title">验证码抢号</span>
             </el-menu-item>
+            <!--<el-menu-item index="/List" route="/List">-->
+              <!--<i class="el-icon-menu"></i>-->
+              <!--<span slot="title">搜号</span>-->
+            <!--</el-menu-item>-->
           </el-menu>
         </el-aside>
 
